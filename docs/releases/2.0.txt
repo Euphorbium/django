@@ -320,7 +320,7 @@ Templates
 Tests
 ~~~~~
 
-* Added threading support to :class:`~django.test.LiveServerTestCase`.
+* ...
 
 * Added settings that allow customizing the test tablespace parameters for
   Oracle: :setting:`DATAFILE_SIZE`, :setting:`DATAFILE_TMP_SIZE`,

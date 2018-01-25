@@ -170,36 +170,3 @@ class LiveServerPort(LiveServerBase):
             if hasattr(TestCase, 'server_thread'):
                 TestCase.server_thread.terminate()
 
-    def test_specified_port_bind(self):
-        """LiveServerTestCase.port customizes the server's port."""
-        TestCase = type(str('TestCase'), (LiveServerBase,), {})
-        # Find an open port and tell TestCase to use it.
-        s = socket.socket()
-        s.bind(('', 0))
-        TestCase.port = s.getsockname()[1]
-        s.close()
-        TestCase.setUpClass()
-        try:
-            self.assertEqual(
-                TestCase.port, TestCase.server_thread.port,
-                'Did not use specified port for LiveServerTestCase thread: %s' % TestCase.port
-            )
-        finally:
-            if hasattr(TestCase, 'server_thread'):
-                TestCase.server_thread.terminate()
-
-
-class LiverServerThreadedTests(LiveServerBase):
-    """If LiverServerTestCase isn't threaded, these tests will hang."""
-
-    def test_view_calls_subview(self):
-        url = '/subview_calling_view/?%s' % urlencode({'url': self.live_server_url})
-        with self.urlopen(url) as f:
-            self.assertEqual(f.read(), b'subview calling view: subview')
-
-    def test_check_model_instance_from_subview(self):
-        url = '/check_model_instance_from_subview/?%s' % urlencode({
-            'url': self.live_server_url,
-        })
-        with self.urlopen(url) as f:
-            self.assertIn(b'emily', f.read())
