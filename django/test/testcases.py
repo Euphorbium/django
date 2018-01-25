@@ -1238,8 +1238,8 @@ class LiveServerThread(threading.Thread):
             connections.close_all()
 
 
-    def _create_server(self, port):
-        return WSGIServer((self.host, port), QuietWSGIRequestHandler, allow_reuse_address=False)
+    def _create_server(self):
+        return WSGIServer((self.host, self.port), QuietWSGIRequestHandler, allow_reuse_address=False)
 
     def terminate(self):
         if hasattr(self, 'httpd'):
